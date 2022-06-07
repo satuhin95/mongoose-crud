@@ -4,8 +4,12 @@ const router = express.Router();
 const todoSchema = require('../schemas/todoSchema');
 const Todo = new mongoose.model("Todos",todoSchema);
 
+const checkLogin = require('../middlewares/checkLogin');
+
  //get all the todo
-router.get('/', (req,res)=>{
+router.get('/',checkLogin, (req,res)=>{
+    console.log(req.username);
+    console.log(req.userId);
   Todo.find({status:"active"}).select({_id:0,date:0,__v:0}).limit(2).exec((err,result)=>{
     if(err){
         res.status(500).json({
